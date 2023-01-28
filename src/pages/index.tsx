@@ -110,7 +110,7 @@ export default function Home() {
               {bossList.map((key, index) => {
                 if (bossCounts.bossCounts[index] === 0) return
                 return (
-                <Table.Row>
+                <Table.Row key={key}>
                   <Table.Cell>{key}</Table.Cell>
                   <Table.Cell>{bossCounts.bossKillCounts[index]}</Table.Cell>
                   <Table.Cell>{bossCounts.bossCounts[index]}</Table.Cell>
