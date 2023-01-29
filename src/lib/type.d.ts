@@ -1,7 +1,7 @@
 interface Player {
     name_id: string
     is_myself: boolean
-    weapon_list: number[3]
+    weapon_list: number[]
     dead_count: number
     byname: string
     special_id: number
@@ -32,27 +32,34 @@ interface JobResult {
     id: string
     scale: []
     ikura_num: number
-    players: Player[4]
-    boss_counts: number[15]
-    boss_kill_counts: number[15]
+    players: Player[]
+    boss_counts: number[]
+    boss_kill_counts: number[]
     waves: Wave[]
     job_result: {
         is_clear: boolean
+        is_boss_defeated?: boolean
         failure_wave?: number
     }
     play_time: number
     schedule: Schedule
 }
 
-interface ParseResult {
-    [key: string]: {
-        bossKillCounts: number[15]
-        bossCounts: number[15]
-        result: [{
-            playTime: number
-            grade: number
-            grade_point: number
-        }]
+interface Statistic {
+    bossKillCounts: number[]
+    bossCounts: number[]
+    result: {
+        playTime: number
+        grade: number
+        gradePoint: number
+        jobResult: {
+            isClear: boolean
+            isBossDefeated?: boolean
+            failureWave?: number
+        }
+    }[]
+}
 
-    }
+interface ParseResult {
+    [key: string]: Statistic
 }
