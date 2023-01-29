@@ -109,6 +109,7 @@ export default function Home() {
                   return <StatisticViewer statistic={{
                     ...bossCounts,
                     result: Object.keys(parseResult).reduce((previous, key) => {
+                      // @ts-ignore
                       return previous.concat(parseResult[key].result)
                     }, []),
                   }} />
