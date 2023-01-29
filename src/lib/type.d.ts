@@ -8,6 +8,7 @@ interface Player {
     name: string
     grade: number
     grade_point: number
+    boss_kill_counts: number[]
 }
 
 interface Wave {
