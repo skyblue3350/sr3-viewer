@@ -94,7 +94,7 @@ export default function Home() {
       <main>
         <Container>
           <Header as='h1' dividing>データ読み込み</Header>
-          Salmonia3+ の「マイページ」 -> 「バックアップ」から出力した json ファイルを選択してください。<br />
+          Salmonia3+ の「マイページ」 -&gt; 「バックアップ」から出力した json ファイルを選択してください。<br />
           <input type='file' onChange={hoge}/>
           <Header as='h1' dividing>リザルト</Header>
           <Tab
