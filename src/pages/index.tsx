@@ -39,7 +39,7 @@ export default function Home() {
           tmp.result.push({
             playTime: current.play_time,
             grade: current.players[0].grade,
-            grade_point: current.players[0].grade_point,
+            gradePoint: current.players[0].grade_point,
             jobResult: {
               isClear: current.job_result.is_clear,
               ...current.job_result.is_boss_defeated !== undefined ? {isBossDefeated: current.job_result.is_boss_defeated}: {},
