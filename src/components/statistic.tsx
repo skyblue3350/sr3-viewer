@@ -7,11 +7,12 @@ export interface Props {
 }
 
 export const StatisticViewer = (props: Props) => {
+    if (!props.statistic) return <></>
+
     const totalJobCount = props.statistic.result.length
     const clearJobCount = props.statistic.result.filter(value => value.jobResult.isClear).length
     const clearJobPercentage = Math.round(clearJobCount/totalJobCount*100)
     const totalBoss = props.statistic.result.filter(value => 'isBossDefeated' in value.jobResult)
-    console.log(totalBoss)
     const totalBossCount = totalBoss.length
     const clearBossCount = totalBoss.filter(value => value.jobResult.isBossDefeated).length
     const clearBossPercentage = Math.round(clearBossCount/totalBossCount*100)
