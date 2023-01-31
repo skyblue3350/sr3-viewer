@@ -29,7 +29,7 @@ export const StatisticViewer = (props: Props) => {
             name: value.playTime,
             gradePoint: value.gradePoint,
             grade: gradeList[value.grade],
-            value: (value.grade * 100) + value.gradePoint
+            value: (value.grade * 1000) + value.gradePoint
         }
     })
 
