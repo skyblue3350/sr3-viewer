@@ -1,6 +1,12 @@
-import { bossList } from '@/lib/splatoon/labels'
+import { bossList, gradeList } from '@/lib/splatoon/labels'
 import React from 'react'
+import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { Statistic, Table } from 'semantic-ui-react'
+import dynamic from 'next/dynamic'
+import { cdate } from 'cdate'
+
+const GradePointChart = dynamic(async () => await (await import('./gradePointChart')).GradePointChart, { ssr: false })
+
 
 export interface Props {
     statistic: Statistic
@@ -17,7 +23,18 @@ export const StatisticViewer = (props: Props) => {
     const clearBossCount = totalBoss.filter(value => value.jobResult.isBossDefeated).length
     const clearBossPercentage = Math.round(clearBossCount/totalBossCount*100)
 
+    const graphData = props.statistic.result.map(value => {
+
+        return {
+            name: value.playTime,
+            gradePoint: value.gradePoint,
+            grade: gradeList[value.grade],
+            value: (value.grade * 100) + value.gradePoint
+        }
+    })
+
     return (<>
+        <GradePointChart graphData={graphData}/>
         <Statistic.Group>
             <Statistic label={'総バイト数'} value={totalJobCount} />
             <Statistic label={'バイトクリア数（クリア率）'} value={`${clearJobCount}(${clearJobPercentage}%)`} />
@@ -44,5 +61,6 @@ export const StatisticViewer = (props: Props) => {
                 })}
             </Table.Body>
         </Table>
+        
     </>)
 }
