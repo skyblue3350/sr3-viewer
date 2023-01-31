@@ -5,21 +5,21 @@ import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipCont
 
 
 interface Props {
-    graphData: {}[],
+    graphData: {value: number}[],
 }
 
 const CustomTooltip = ({active, payload, label}: TooltipProps<ValueType, NameType>) => {
     if (active && payload && payload.length) {
         return <div className="custom-tooltip">
             <p className="label">{`${convertTime(label)}`}</p>
-            <p className="intro">{`${payload[0].payload.grade} ${payload[0].payload.gradePoint}`}</p>
+            <p className="intro">{`${payload[0].payload.grade} ${payload[0].payload.gradePoint} ${payload[0].value}`}</p>
         </div>
     }
     return <></>
 }
 
 const convertRank = (value: any, index: number): string => {
-    const i = (value / 1000 | 0) + 1
+    const i = (value / 100 | 0)
     return i < gradeList.length ? gradeList[i] : ''
 }
 
@@ -30,6 +30,9 @@ const convertTime = (playTime: number) => {
 }
 
 export const GradePointChart = (props: Props) => {
+    const min = Math.min(...props.graphData.map(v => v.value)) - 100
+    const max = Math.max(...props.graphData.map(v => v.value))
+    const ticks = gradeList.map((v, i) => i * 100).filter(v => v <= max).filter(v => v >= min)
     return (
     <>
         <LineChart width={1000} height={500} data={props.graphData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -45,8 +48,8 @@ export const GradePointChart = (props: Props) => {
             <YAxis
                 width={100}
                 tickFormatter={convertRank}
-                domain={['dataMin-1000', 'dataMax+100']}
-                ticks={[1000, 2000, 3000, 4000, 5000, 6000, 7000, 8500]}
+                domain={['auto', 'dataMax+50']}
+                ticks={ticks}
                 textAnchor='end' />
         </LineChart>
     </>)
