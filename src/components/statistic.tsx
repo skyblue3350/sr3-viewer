@@ -1,9 +1,7 @@
 import { bossList, gradeList } from '@/lib/splatoon/labels'
 import React from 'react'
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { Statistic, Table } from 'semantic-ui-react'
 import dynamic from 'next/dynamic'
-import { cdate } from 'cdate'
 
 const GradePointChart = dynamic(async () => await (await import('./gradePointChart')).GradePointChart, { ssr: false })
 
