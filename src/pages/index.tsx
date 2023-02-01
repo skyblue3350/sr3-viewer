@@ -4,6 +4,7 @@ import { cdate } from 'cdate'
 import { Container, Dropdown, Header, Tab, Table } from 'semantic-ui-react'
 import { bossList, stageList } from '@/lib/splatoon/labels'
 import { StatisticViewer } from '@/components/statistic'
+import { sumArray } from '@/lib/utils'
 
 
 
@@ -51,6 +52,7 @@ export default function Home() {
           tmp.bossKillCounts = tmp.bossKillCounts.map((v: number, index: number) => {
             return v + current.players[0].boss_kill_counts[index]
           })
+          tmp.bossKillCountsByTeam = sumArray(tmp.bossKillCountsByTeam, current.boss_kill_counts)
           previous[key] = tmp
           
           return previous
@@ -58,6 +60,7 @@ export default function Home() {
           get(target: ParseResult, name: string) {
             return name in target ? target[name] : {
               bossKillCounts: Array(15).fill(0),
+              bossKillCountsByTeam: Array(15).fill(0),
               bossCounts: Array(15).fill(0),
               result: [],
             }
@@ -71,15 +74,13 @@ export default function Home() {
 
   const bossCounts = Object.keys(parseResult).reduce((previous, key) => {
     const result = parseResult[key]
-    previous.bossCounts = result.bossCounts.map((v: number, index: number) => {
-      return v + previous.bossCounts[index]
-    })
-    previous.bossKillCounts = result.bossKillCounts.map((v: number, index: number) => {
-      return v + previous.bossKillCounts[index]
-    })
+    previous.bossCounts = sumArray(result.bossCounts, previous.bossCounts)
+    previous.bossKillCounts = sumArray(result.bossKillCounts, previous.bossKillCounts)
+    previous.bossKillCountsByTeam = sumArray(result.bossKillCountsByTeam, previous.bossKillCountsByTeam)
     return previous
   }, {
     bossKillCounts: Array(15).fill(0),
+    bossKillCountsByTeam: Array(15).fill(0),
     bossCounts: Array(15).fill(0),
   })
   

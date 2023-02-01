@@ -1,9 +1,7 @@
 import { bossList, gradeList } from '@/lib/splatoon/labels'
 import React from 'react'
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 import { Statistic, Table } from 'semantic-ui-react'
 import dynamic from 'next/dynamic'
-import { cdate } from 'cdate'
 
 const GradePointChart = dynamic(async () => await (await import('./gradePointChart')).GradePointChart, { ssr: false })
 
@@ -45,18 +43,37 @@ export const StatisticViewer = (props: Props) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>種別</Table.HeaderCell>
-                    <Table.HeaderCell>撃破数</Table.HeaderCell>
+                    <Table.HeaderCell>あなたの討伐数</Table.HeaderCell>
+                    <Table.HeaderCell>あなたの討伐率</Table.HeaderCell>
+                    <Table.HeaderCell>なかまの討伐数</Table.HeaderCell>
+                    <Table.HeaderCell>なかまの討伐率</Table.HeaderCell>
                     <Table.HeaderCell>出現数</Table.HeaderCell>
+                    <Table.HeaderCell>討伐率</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
                 {bossList.map((key, index) => {
                     if (props.statistic.bossCounts[index] === 0) return
+                    const {statistic} = props
+                    const bossCount = statistic.bossCounts[index]
+                    const bossKillCount = statistic.bossKillCounts[index]
+                    const bossKillCountPercentage = Math.floor(bossKillCount/bossCount*100)
+                    const bossKillCountByTeam = statistic.bossKillCountsByTeam[index]
+                    const bossKillCountByTeamPercentage = Math.floor((bossKillCountByTeam-bossKillCount)/3/bossCount*100)
+
                     return (
                     <Table.Row key={key}>
-                        <Table.Cell>{key}</Table.Cell>
-                        <Table.Cell>{props.statistic.bossKillCounts[index]}</Table.Cell>
-                        <Table.Cell>{props.statistic.bossCounts[index]}</Table.Cell>
+                        <Table.Cell content={key} />
+                        <Table.Cell content={bossKillCount} />
+                        <Table.Cell
+                            className={bossKillCountByTeamPercentage <= bossKillCountPercentage? 'text-green' : 'text-red'}
+                            content={`${bossKillCountPercentage}%`} />
+                        <Table.Cell content={bossKillCountByTeam-bossKillCount} />
+                        <Table.Cell
+                            className={bossKillCountByTeamPercentage <= bossKillCountPercentage? 'text-red' : 'text-green'}
+                            content={`${bossKillCountByTeamPercentage}%`} />
+                        <Table.Cell content={bossCount} />
+                        <Table.Cell content={`${Math.floor(bossKillCountByTeam/bossCount*100)}%`} />
                     </Table.Row>)
                 })}
             </Table.Body>

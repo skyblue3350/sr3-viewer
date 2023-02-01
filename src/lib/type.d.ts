@@ -48,6 +48,7 @@ interface JobResult {
 
 interface Statistic {
     bossKillCounts: number[]
+    bossKillCountsByTeam: number[]
     bossCounts: number[]
     result: {
         playTime: number
