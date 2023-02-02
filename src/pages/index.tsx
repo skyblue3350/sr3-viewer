@@ -4,7 +4,7 @@ import { cdate } from 'cdate'
 import { Container, Dropdown, Header, Tab, Table } from 'semantic-ui-react'
 import { bossList, stageList } from '@/lib/splatoon/labels'
 import { StatisticViewer } from '@/components/statistic'
-import { sumArray } from '@/lib/utils'
+import { sumArray, timeToCdate } from '@/lib/utils'
 
 
 
@@ -30,10 +30,9 @@ export default function Home() {
 
         const s: ParseResult = data.reduce((previous, current) => {
           const stage = stageList[current.schedule.stage_id]
-          const base = cdate('2000-12-27 09:00')
-          const dateFormat = 'YYYY年MM月DD日hh:mm'
-          const start = base.add(current.schedule.start_time, 'seconds')
-          const end = base.add(current.schedule.end_time, 'seconds')
+          const dateFormat = 'YYYY年MM月DD日HH:mm'
+          const start = timeToCdate(current.schedule.start_time)
+          const end = timeToCdate(current.schedule.end_time)
           const key = `${stage} (${start.format(dateFormat)}-${end.format(dateFormat)})`
 
           const tmp = previous[key]
