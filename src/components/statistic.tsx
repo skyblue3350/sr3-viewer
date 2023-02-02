@@ -2,6 +2,7 @@ import { bossList, gradeList } from '@/lib/splatoon/labels'
 import React from 'react'
 import { Statistic, Table } from 'semantic-ui-react'
 import dynamic from 'next/dynamic'
+import humanizeDuration from 'humanize-duration'
 
 const GradePointChart = dynamic(async () => await (await import('./gradePointChart')).GradePointChart, { ssr: false })
 
@@ -30,14 +31,24 @@ export const StatisticViewer = (props: Props) => {
             value: (value.grade * 100) + value.gradePoint
         }
     })
+    const playtime = props.statistic.result.map(value => {
+        if ('isBossDefeated' in value.jobResult) return 4
+        if (value.jobResult.isClear) return 3
+        if (value.jobResult.failureWave) return value.jobResult.failureWave
+        return 0
+    }).reduce((previous, current) => {
+        // wave * 100[s] * 1000 [ms]
+        return previous + current * 100 * 1000
+    }, 0)
 
     return (<>
         <GradePointChart graphData={graphData}/>
-        <Statistic.Group>
+        <Statistic.Group size='mini'>
             <Statistic label={'総バイト数'} value={totalJobCount} />
             <Statistic label={'バイトクリア数（クリア率）'} value={`${clearJobCount}(${clearJobPercentage}%)`} />
             <Statistic label={'ヨコヅナバイト数'} value={totalBossCount} />
             <Statistic label={'ヨコヅナクリア数（クリア率）'} value={`${clearBossCount}(${clearBossPercentage}%)`} />
+            <Statistic label={'プレイ時間'} value={humanizeDuration(playtime, {language: 'ja', delimiter: ''})} />
         </Statistic.Group>
         <Table striped>
             <Table.Header>
