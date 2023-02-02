@@ -1,4 +1,5 @@
 import { gradeList } from '@/lib/splatoon/labels'
+import { timeToCdate } from '@/lib/utils'
 import { cdate } from 'cdate'
 import { CartesianGrid, Line, LineChart, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
@@ -24,9 +25,7 @@ const convertRank = (value: any, index: number): string => {
 }
 
 const convertTime = (playTime: number) => {
-    const base = cdate('2000-12-27 09:00')
-    const p = base.add(playTime, 'seconds')
-    return p.format('YYYY-MM-DD HH:mm')
+    return timeToCdate(playTime).format('YYYY-MM-DD HH:mm')
 }
 
 export const GradePointChart = (props: Props) => {
