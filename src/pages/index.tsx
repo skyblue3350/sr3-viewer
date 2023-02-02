@@ -44,6 +44,7 @@ export default function Home() {
             jobResult: {
               isClear: current.job_result.is_clear,
               ...current.job_result.is_boss_defeated !== undefined ? {isBossDefeated: current.job_result.is_boss_defeated}: {},
+              ...current.job_result.failure_wave !== undefined ? {failureWave: current.job_result.failure_wave}: {},
             },
           })
           tmp.bossCounts = tmp.bossCounts.map((v: number, index: number) => {
