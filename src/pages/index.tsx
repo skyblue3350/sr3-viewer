@@ -120,7 +120,7 @@ export default function Home() {
                 menuItem: 'スケジュール',
                 render: () => {
                   return <>
-                    <Dropdown placeholder='バイトスケジュール' fluid selection search options={Object.keys(parseResult).map(s => {
+                    <Dropdown placeholder='バイトスケジュール' fluid selection search options={Object.keys(parseResult).reverse().map(s => {
                       return {
                         text: s,
                         value: s,
