@@ -1,7 +1,6 @@
 import { gradeList } from '@/lib/splatoon/labels'
 import { timeToCdate } from '@/lib/utils'
-import { cdate } from 'cdate'
-import { CartesianGrid, Line, LineChart, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 
 
@@ -42,8 +41,8 @@ export const GradePointChart = (props: Props) => {
     const max = Math.max(...props.graphData.map(v => v.value))
     const ticks = gradeList.map((v, i) => i * 100).concat(Object.keys(extraLabel).map(Number)).filter(v => v <= max+300).filter(v => v >= min)
     return (
-    <>
-        <LineChart width={1000} height={500} data={props.graphData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+    <ResponsiveContainer width='100%' height={500}>
+        <LineChart data={props.graphData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
             <Tooltip content={<CustomTooltip />} cursor={{fill: 'transparent'}} />
             <CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
             <Line type='monotone' dataKey='value' stroke='#8884d8' />
@@ -54,11 +53,11 @@ export const GradePointChart = (props: Props) => {
                 textAnchor='start'
                 tickFormatter={convertTime} />
             <YAxis
-                width={100}
+                width={120}
                 tickFormatter={convertRank}
                 domain={['auto', 'auto']}
                 ticks={ticks}
                 textAnchor='end' />
         </LineChart>
-    </>)
+    </ResponsiveContainer>)
 }

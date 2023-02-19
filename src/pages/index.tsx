@@ -1,16 +1,16 @@
 import Head from 'next/head'
-import React, { useState } from 'react'
-import { cdate } from 'cdate'
-import { Container, Dropdown, Header, Tab, Table } from 'semantic-ui-react'
-import { bossList, stageList } from '@/lib/splatoon/labels'
+import React, { useRef, useState } from 'react'
+import { Container, Dropdown, Header, Ref, Tab } from 'semantic-ui-react'
+import { stageList } from '@/lib/splatoon/labels'
 import { StatisticViewer } from '@/components/statistic'
+import { ScreenShot } from '@/components/screenshot'
 import { sumArray, timeToCdate } from '@/lib/utils'
-
 
 
 export default function Home() {
   const [parseResult, setParseResult] = useState<ParseResult>({})
   const [schedule, setSchedule] = useState<string>('')
+  const nodeRef = useRef<HTMLDivElement>(null)
 
   const hoge = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -98,40 +98,44 @@ export default function Home() {
           Salmonia3+ の「マイページ」 -&gt; 「バックアップ」から出力した json ファイルを選択してください。<br />
           <input type='file' onChange={hoge}/>
           <Header as='h1' dividing>リザルト</Header>
-          <Tab
-            menu={{
-              secondary: true,
-              pointing: true,
-            }}
-            panes={[
-              {
-                menuItem: '累計',
-                render: () => {
-                  return <StatisticViewer statistic={{
-                    ...bossCounts,
-                    result: Object.keys(parseResult).reduce((previous, key) => {
-                      // @ts-ignore
-                      return previous.concat(parseResult[key].result)
-                    }, []),
-                  }} />
-                }
-              },
-              {
-                menuItem: 'スケジュール',
-                render: () => {
-                  return <>
-                    <Dropdown placeholder='バイトスケジュール' fluid selection search options={Object.keys(parseResult).reverse().map(s => {
-                      return {
-                        text: s,
-                        value: s,
-                        key: s,
-                      }
-                    })} onChange={(event, data) => setSchedule(data.value!.toString())} />
-                    <StatisticViewer statistic={parseResult[schedule]} />
-                  </>
-                }
-              },
-            ]} />
+          <ScreenShot targetRef={nodeRef} content={'スクリーンショットを保存'} filename='sr3-result.png'/>
+          {/* TODO: FIX v3 移行時に対応 */}
+          <Ref innerRef={nodeRef}>
+            <Tab
+              menu={{
+                secondary: true,
+                pointing: true,
+              }}
+              panes={[
+                {
+                  menuItem: '累計',
+                  render: () => {
+                    return <StatisticViewer statistic={{
+                      ...bossCounts,
+                      result: Object.keys(parseResult).reduce((previous, key) => {
+                        // @ts-ignore
+                        return previous.concat(parseResult[key].result)
+                      }, []),
+                    }} />
+                  }
+                },
+                {
+                  menuItem: 'スケジュール',
+                  render: () => {
+                    return <>
+                      <Dropdown placeholder='バイトスケジュール' fluid selection search options={Object.keys(parseResult).reverse().map(s => {
+                        return {
+                          text: s,
+                          value: s,
+                          key: s,
+                        }
+                      })} onChange={(event, data) => setSchedule(data.value!.toString())} />
+                      <StatisticViewer statistic={parseResult[schedule]} />
+                    </>
+                  }
+                },
+              ]} />
+            </Ref>
         </Container>
       </main>
     </>
