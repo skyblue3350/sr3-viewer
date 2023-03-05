@@ -1,15 +1,13 @@
-export const stageList = [
-    '',
-    'シェケナダム',
-    'アラマキ砦',
-    '',
-    '',
-    '',
-    '難破船ドン・ブラコ',
-    'ムニ・エール海洋発電所',
-]
+export const stageList: {[key: number]: string} = {
+    1: 'シェケナダム',
+    2: 'アラマキ砦',
+    6: '難破船ドン・ブラコ',
+    7: 'ムニ・エール海洋発電所',
+    101: 'スメーシーワールド',
+    102: '海女美術大学',
+}
 
-export const bossList = [
+export const bossList: string[] = [
     'バクダン',
     'カタパッド',
     'テッパン',
@@ -27,7 +25,7 @@ export const bossList = [
     '',
 ]
 
-export const gradeList = [
+export const gradeList: string[] = [
     'かけだし',
     'はんにんまえ',
     'いちにんまえ',
