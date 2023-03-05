@@ -1,4 +1,4 @@
-export const stageList = {
+export const stageList: {[key: number]: string} = {
     1: 'シェケナダム',
     2: 'アラマキ砦',
     6: '難破船ドン・ブラコ',
@@ -7,7 +7,7 @@ export const stageList = {
     102: '海女美術大学',
 }
 
-export const bossList = [
+export const bossList: string[] = [
     'バクダン',
     'カタパッド',
     'テッパン',
@@ -25,7 +25,7 @@ export const bossList = [
     '',
 ]
 
-export const gradeList = [
+export const gradeList: string[] = [
     'かけだし',
     'はんにんまえ',
     'いちにんまえ',
